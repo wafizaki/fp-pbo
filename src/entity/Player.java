@@ -16,7 +16,7 @@ public class Player extends Entity {
 	KeyHandler keyH;
 
 	public final int screenX, screenY;
-	int hasKey = 0;
+	public int hasKey = 0;
 
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
@@ -83,7 +83,7 @@ public class Player extends Entity {
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
 
-//			CHECK OBJECT COLLISION
+			// CHECK OBJECT COLLISION
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 
@@ -91,18 +91,18 @@ public class Player extends Entity {
 			if (collisionOn == false) {
 
 				switch (direction) {
-				case "up":
-					worldY -= speed;
-					break;
-				case "down":
-					worldY += speed;
-					break;
-				case "left":
-					worldX -= speed;
-					break;
-				case "right":
-					worldX += speed;
-					break;
+					case "up":
+						worldY -= speed;
+						break;
+					case "down":
+						worldY += speed;
+						break;
+					case "left":
+						worldX -= speed;
+						break;
+					case "right":
+						worldX += speed;
+						break;
 				}
 			}
 
@@ -129,26 +129,32 @@ public class Player extends Entity {
 			String objectName = gp.obj[i].name;
 
 			switch (objectName) {
-			case "Key":
-				gp.playSE(1);
-				hasKey++;
-				gp.obj[i] = null;
-				System.out.println("Key: " + hasKey);
-				break;
-			case "Door":
-				if (hasKey > 0) {
-					gp.playSE(3);
+				case "Key":
+					gp.playSE(1);
+					hasKey++;
 					gp.obj[i] = null;
-					hasKey--;
-					System.out.println("Key: " + hasKey);
-				}
-				else System.out.println("Find more Key!");
-				break;
-			case"Boots":
-				gp.playSE(2);
-				speed +=1.5;
-				gp.obj[i]=null;
-				break;
+					gp.ui.showMessage("You got a key!");
+					break;
+				case "Door":
+					if (hasKey > 0) {
+						gp.playSE(3);
+						gp.obj[i] = null;
+						hasKey--;
+						gp.ui.showMessage("You opened the door!");
+					} else
+						gp.ui.showMessage("Find more Key to open the door!");
+					break;
+				case "Boots":
+					gp.playSE(2);
+					speed += 1.5;
+					gp.obj[i] = null;
+					gp.ui.showMessage("Speed up!");
+					break;
+				case "Chest":
+					gp.ui.isGameFinished = true;
+					gp.stopMusic();
+					gp.playSE(4);
+					break;
 			}
 		}
 	}
@@ -160,59 +166,59 @@ public class Player extends Entity {
 		BufferedImage image = null;
 
 		switch (direction) {
-		case "up":
-			if (spriteNumber == 1) {
-				image = up1;
-			}
-			if (spriteNumber == 2) {
-				image = up;
-			}
-			if (spriteNumber == 3) {
-				image = up2;
-			}
-			if (spriteNumber == 4) {
-				image = up;
-			}
-			break;
-		case "down":
-			if (spriteNumber == 1) {
-				image = down1;
-			} else if (spriteNumber == 2) {
-				image = down;
-			} else if (spriteNumber == 3) {
-				image = down2;
-			} else if (spriteNumber == 4) {
-				image = down;
-			}
-			break;
-		case "left":
-			if (spriteNumber == 1) {
-				image = left1;
-			}
-			if (spriteNumber == 2) {
-				image = left;
-			}
-			if (spriteNumber == 3) {
-				image = left2;
-			}
-			if (spriteNumber == 4) {
-				image = left;
-			}
-			break;
-		case "right":
-			if (spriteNumber == 1) {
-				image = right1;
-			}
-			if (spriteNumber == 2) {
-				image = right;
-			}
-			if (spriteNumber == 3) {
-				image = right2;
-			}
-			if (spriteNumber == 4) {
-				image = right;
-			}
-			break;
+			case "up":
+				if (spriteNumber == 1) {
+					image = up1;
+				}
+				if (spriteNumber == 2) {
+					image = up;
+				}
+				if (spriteNumber == 3) {
+					image = up2;
+				}
+				if (spriteNumber == 4) {
+					image = up;
+				}
+				break;
+			case "down":
+				if (spriteNumber == 1) {
+					image = down1;
+				} else if (spriteNumber == 2) {
+					image = down;
+				} else if (spriteNumber == 3) {
+					image = down2;
+				} else if (spriteNumber == 4) {
+					image = down;
+				}
+				break;
+			case "left":
+				if (spriteNumber == 1) {
+					image = left1;
+				}
+				if (spriteNumber == 2) {
+					image = left;
+				}
+				if (spriteNumber == 3) {
+					image = left2;
+				}
+				if (spriteNumber == 4) {
+					image = left;
+				}
+				break;
+			case "right":
+				if (spriteNumber == 1) {
+					image = right1;
+				}
+				if (spriteNumber == 2) {
+					image = right;
+				}
+				if (spriteNumber == 3) {
+					image = right2;
+				}
+				if (spriteNumber == 4) {
+					image = right;
+				}
+				break;
 		}
 		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 	}
