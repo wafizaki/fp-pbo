@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 public class Player extends Entity {
 
@@ -26,12 +27,12 @@ public class Player extends Entity {
 		screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
 		solidArea = new Rectangle();
-		solidArea.x = 8;
+		solidArea.x = 14;
 		solidArea.y = 16;
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
-		solidArea.width = 32;
-		solidArea.height = 32;
+		solidArea.width = 20;
+		solidArea.height = 26;
 
 		setDefaultValues();
 		getPlayerImage();
@@ -47,25 +48,37 @@ public class Player extends Entity {
 	}
 
 	public void getPlayerImage() {
+		
+		up1 = setup("walk_up_1");
+		up2 = setup("walk_up_2");
+		up = setup("walk_up");
+		down1 = setup("walk_down_1");
+		down2 = setup("walk_down_2");
+		down = setup("walk_down");
+		left1 = setup("walk_left_1");
+		left2 = setup("walk_left_2");
+		left = setup("walk_left");
+		right1 = setup("walk_right_1");
+		right2 = setup("walk_right_2");
+		right = setup("walk_right");
+	}
+	
+	public BufferedImage setup(String imageName) {
+		
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage image = null;
+		
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/walk_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/walk_up_2.png"));
-			up = ImageIO.read(getClass().getResourceAsStream("/player/walk_up.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/walk_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/walk_down_2.png"));
-			down = ImageIO.read(getClass().getResourceAsStream("/player/walk_down.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/walk_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/walk_left_2.png"));
-			left = ImageIO.read(getClass().getResourceAsStream("/player/walk_left.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/walk_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/walk_right_2.png"));
-			right = ImageIO.read(getClass().getResourceAsStream("/player/walk_right.png"));
-
-		} catch (IOException e) {
+			image  = ImageIO.read(getClass().getResourceAsStream("/player/"+ imageName + ".png"));
+			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+			
+		}catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		return image;
 	}
-
+		
 	public void update() {
 		if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true
 				|| keyH.rightPressed == true) {
@@ -220,7 +233,9 @@ public class Player extends Entity {
 				}
 				break;
 		}
-		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, null);
+		//g2.setColor(Color.red);
+		//g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DecimalFormat;
 
 import object.OBJ_Key;
 
@@ -17,7 +18,9 @@ public class UI {
 	public String message = "";
 	int messageCounter = 0;
 	public boolean isGameFinished = false;
+	
 	double playTime;
+	DecimalFormat dFormat = new DecimalFormat("#0.00");
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
@@ -32,7 +35,7 @@ public class UI {
 	            // Handle the exception appropriately
 	        }
 		
-		OBJ_Key key = new OBJ_Key();
+		OBJ_Key key = new OBJ_Key(gp);
 		keyImage = key.image;
 	}
 	
@@ -56,6 +59,12 @@ public class UI {
 			y = gp.screenHeight/2 - (gp.tileSize*3);
 			g2.drawString(text, x, y);
 			
+			text = "Your Time is :" + dFormat.format(playTime) + "!";
+			textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();	
+			x = gp.screenWidth/2 - textLength/2;
+			y = gp.screenHeight/2 + (gp.tileSize*4);
+			g2.drawString(text, x, y);
+			
 			g2.setFont(font2d_40B);
 			g2.setColor(Color.yellow);
 			text = "CONGRATULATIONS!";
@@ -73,8 +82,8 @@ public class UI {
 			g2.drawString("x" + gp.player.hasKey, 74, 65);
 			
 			//timer
-			//playTime +=(double)1/60;
-			//g2.drawString("Time:" + playTime, gp.tileSize*11, 65);
+			playTime +=(double)1/60;
+			g2.drawString("Time:" + dFormat.format(playTime), gp.tileSize*10, 65);
 			
 			//message
 			if(messageOn == true) {
