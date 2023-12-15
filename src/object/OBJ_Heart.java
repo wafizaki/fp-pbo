@@ -9,9 +9,9 @@ public class OBJ_Heart extends Entity {
 		super(gp);
 
 		name = "Heart";
-		image=setup("/objects/heart_full");
-		image1=setup("/objects/heart_half");
-		image2=setup("/objects/heart_blank");
+		image=setup("/objects/heart_full",gp.tileSize,gp.tileSize);
+		image1=setup("/objects/heart_half",gp.tileSize,gp.tileSize);
+		image2=setup("/objects/heart_blank",gp.tileSize,gp.tileSize);
 		
 	}
 }

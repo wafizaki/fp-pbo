@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -16,10 +17,13 @@ public class Entity {
 	public int worldX, worldY;
 	public int speed;
 	public BufferedImage up, up1, up2, down, down1, down2, left, left1, left2, right, right1, right2;
+	public BufferedImage attackUp, attackUp1, attackUp2, attackRight, attackRight1, attackRight2, attackLeft,
+			attackLeft1, attackLeft2, attackDown, attackDown1, attackDown2;
 	public String direction = "down";
 	public int spriteCounter = 0;
 	public int spriteNumber = 1;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
@@ -32,6 +36,7 @@ public class Entity {
 	public boolean collision = false;
 //	0=player 1=npc 2=monster
 	public int type;
+	boolean attacking = false;
 
 //	CHARACTER STATUS
 	public int maxLife;
@@ -116,16 +121,23 @@ public class Entity {
 			}
 			spriteCounter = 0;
 		}
+		if (invincible == true) {
+			invincibleCounter++;
+			if (invincibleCounter > 30) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 
-	public BufferedImage setup(String imagePath) {
+	public BufferedImage setup(String imagePath, int width, int height) {
 
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;
 
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-			image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+			image = uTool.scaleImage(image, width, height);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -199,8 +211,13 @@ public class Entity {
 				}
 				break;
 			}
-
+			if (invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+			}
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			if (invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			}
 		}
 
 	}
