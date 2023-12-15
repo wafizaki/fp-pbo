@@ -37,7 +37,7 @@ public class NPC_OldMan extends Entity {
 		dialogue[1] = "Aye how u been big bro?";
 		dialogue[2] = "Man its been a minute";
 		dialogue[3] = "Aye yo my G";
-		dialogue[4]= "BROOOOO THIS SHIT HELLA GOOD \nAYE YOU GOTTA CHECK'EM OUT\nBIG BRO";
+		dialogue[4]= "BROOOOO THIS SHIT CRAZY\nAYE YOU GOTTA CHECK'EM OUT\nBIG BRO";
 	}
 
 	public void setAction() {
