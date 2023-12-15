@@ -13,6 +13,7 @@ public class NPC_OldMan extends Entity {
 		speed = 1;
 
 		getImage();
+		setDialogue();
 	}
 
 	public void getImage() {
@@ -29,6 +30,14 @@ public class NPC_OldMan extends Entity {
 		right1 = setup("/npc/oldman_right_1");
 		right2 = setup("/npc/oldman_right_2");
 		right = setup("/npc/oldman_up_2");
+	}
+	
+	public void setDialogue() {
+		dialogue[0] = "Wassup bro";
+		dialogue[1] = "Aye how u been big bro?";
+		dialogue[2] = "Man its been a minute";
+		dialogue[3] = "Aye yo my G";
+		dialogue[4]= "BROOOOO THIS SHIT HELLA GOOD \nAYE YOU GOTTA CHECK'EM OUT\nBIG BRO";
 	}
 
 	public void setAction() {
@@ -54,6 +63,9 @@ public class NPC_OldMan extends Entity {
 			actionLockCounter = 0;
 		}
 
+	}
+	public void speak() {
+		super.speak();
 	}
 
 }
