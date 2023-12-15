@@ -3,15 +3,18 @@ package main;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
-import java.io.File;
+import java.awt.RenderingHints;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 
 public class UI {
 
 	GamePanel gp;
 	Graphics2D g2;
-	Font font2d_25, font2d_40B;
+	Font font2d,font2d_40B,font2d_25;
 	public boolean messageOn = false;
 	public String message = "";
 	int messageCounter = 0;
@@ -25,16 +28,16 @@ public class UI {
 		this.gp = gp;
 
 		try {
-			// Load the TTF font
-			File fontFile = new File("C:\\Users\\rog\\Downloads\\press-start-2p-font\\font2d.ttf");
-			font2d_25 = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 25);
-			font2d_40B = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.BOLD, 40);
+			InputStream is = getClass().getResourceAsStream("/font/font2d.ttf");
+			InputStream is_1 = getClass().getResourceAsStream("/font/DePixelKlein.ttf");
+			font2d = Font.createFont(Font.TRUETYPE_FONT, is);
+			font2d_40B = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD,40);
+			font2d_25 = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN,25);
 		} catch (Exception e) {
 			e.printStackTrace();
-			// Handle the exception appropriately
 		}
-
 	}
+	
 
 	public void showMessage(String text) {
 		message = text;
@@ -44,7 +47,8 @@ public class UI {
 	public void draw(Graphics2D g2) {
 
 		this.g2 = g2;
-		g2.setFont(font2d_40B);
+		g2.setFont(font2d);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.setColor(Color.white);
 //		GAME STATE
 		if (gp.gameState == gp.playState) {
