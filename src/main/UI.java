@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import entity.Entity;
 import object.OBJ_Heart;
@@ -18,12 +19,12 @@ public class UI {
 	Graphics2D g2;
 	Font font2d, font2d_40B, font2d_25;
 	public boolean messageOn = false;
-	public String message = "";
-	int messageCounter = 0;
 	public boolean isGameFinished = false;
 	public String currentDialogue = "";
 	public int commandNum = 0;
 	BufferedImage heart_full, heart_half, heart_blank;
+	ArrayList<String> message = new ArrayList<>();
+	ArrayList<Integer> messageCounter = new ArrayList<>();
 
 	double playTime;
 	DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -48,9 +49,9 @@ public class UI {
 		heart_blank = heart.image2;
 	}
 
-	public void showMessage(String text) {
-		message = text;
-		messageOn = true;
+	public void addMessage(String text) {
+		message.add(text);
+		messageCounter.add(0);
 	}
 
 	public void draw(Graphics2D g2) {
@@ -66,6 +67,7 @@ public class UI {
 //		PLAY STATE
 		if (gp.gameState == gp.playState) {
 			drawPlayerLife();
+			drawMessage();
 		}
 //		PAUSE STATE
 		if (gp.gameState == gp.pauseState) {
@@ -82,47 +84,71 @@ public class UI {
 		}
 
 		if (isGameFinished == true) {
-			g2.setFont(font2d_25);
-			g2.setColor(Color.WHITE);
-
-			String text;
-			int x, y, textLength;
-
-			text = "You found the treasure!";
-			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-			x = gp.screenWidth / 2 - textLength / 2;
-			y = gp.screenHeight / 2 - (gp.tileSize * 3);
-			g2.drawString(text, x, y);
-
-			text = "Your Time is :" + dFormat.format(playTime) + "!";
-			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-			x = gp.screenWidth / 2 - textLength / 2;
-			y = gp.screenHeight / 2 + (gp.tileSize * 4);
-			g2.drawString(text, x, y);
-
-			g2.setFont(font2d_40B);
-			g2.setColor(Color.yellow);
-			text = "CONGRATULATIONS!";
-			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-			x = gp.screenWidth / 2 - textLength / 2;
-			y = gp.screenHeight / 2 + (gp.tileSize * 2);
-			g2.drawString(text, x, y);
-
-			gp.gameThread = null;
+//			g2.setFont(font2d_25);
+//			g2.setColor(Color.WHITE);
+//
+//			String text;
+//			int x, y, textLength;
+//
+//			text = "You found the treasure!";
+//			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+//			x = gp.screenWidth / 2 - textLength / 2;
+//			y = gp.screenHeight / 2 - (gp.tileSize * 3);
+//			g2.drawString(text, x, y);
+//
+//			text = "Your Time is :" + dFormat.format(playTime) + "!";
+//			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+//			x = gp.screenWidth / 2 - textLength / 2;
+//			y = gp.screenHeight / 2 + (gp.tileSize * 4);
+//			g2.drawString(text, x, y);
+//
+//			g2.setFont(font2d_40B);
+//			g2.setColor(Color.yellow);
+//			text = "CONGRATULATIONS!";
+//			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+//			x = gp.screenWidth / 2 - textLength / 2;
+//			y = gp.screenHeight / 2 + (gp.tileSize * 2);
+//			g2.drawString(text, x, y);
+//
+//			gp.gameThread = null;
 		} else {
-			g2.setFont(font2d_25);
-			g2.setColor(Color.WHITE);
+//			g2.setFont(font2d_25);
+//			g2.setColor(Color.WHITE);
+//
+//			// message
+//			if (messageOn == true) {
+//				g2.setFont(g2.getFont().deriveFont(18F));
+//				g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+//
+//
+//				if (messageCounter > 120) {
+//					messageCounter = 0;
+//					messageOn = false;
+//				}
+//			}
+		}
+	}
 
-			// message
-			if (messageOn == true) {
-				g2.setFont(g2.getFont().deriveFont(18F));
-				g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
+	private void drawMessage() {
+		int messageX = gp.tileSize;
+		int messageY = gp.tileSize * 4;
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 18F));
 
-				messageCounter++;
+		for (int i = 0; i < message.size(); i++) {
+			if (message.get(i) != null) {
 
-				if (messageCounter > 120) {
-					messageCounter = 0;
-					messageOn = false;
+				g2.setColor(Color.black);
+				g2.drawString(message.get(i), messageX+2, messageY+2);
+				g2.setColor(Color.white);
+				g2.drawString(message.get(i), messageX, messageY);
+
+				int counter = messageCounter.get(i) + 1;
+				messageCounter.set(i, counter);
+				messageY += 50;
+
+				if (messageCounter.get(i) > 120) {
+					message.remove(i);
+					messageCounter.remove(i);
 				}
 			}
 		}
@@ -211,10 +237,10 @@ public class UI {
 		g2.drawString(value, textX, textY);
 		textY += lineHeight;
 
-		g2.drawImage(gp.player.currentWeapon.down1,tailX-gp.tileSize, textY-15,null);
+		g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY - 15, null);
 		textY += gp.tileSize;
-		g2.drawImage(gp.player.currentShield.down1,tailX-gp.tileSize, textY-15,null);
-		textY +=gp.tileSize;
+		g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 15, null);
+		textY += gp.tileSize;
 	}
 
 	private void drawPlayerLife() {

@@ -115,7 +115,12 @@ public class Entity {
 			if (gp.player.invincible == false) {
 //				we can give damage
 				gp.playSE(6);
-				gp.player.life -= 1;
+				
+				int damage = attack - gp.player.defense;
+				if (damage < 0) {
+					damage = 0;
+				}
+				gp.player.life -= damage;
 				gp.player.invincible = true;
 			}
 		}
@@ -243,8 +248,9 @@ public class Entity {
 
 //			Monster HP Bar
 			if (type == 2 && hpBarOn == true) {
-				double oneScale = (double) gp.tileSize / maxLife;
-				double hpBarValue = oneScale * life;
+				double normalizedLife = Math.max(0, life);
+				double hpBarValue = ((double) normalizedLife / maxLife) * gp.tileSize;
+
 
 //				BLACK BAR
 				g2.setColor(new Color(35, 35, 35));
@@ -252,7 +258,7 @@ public class Entity {
 
 //				RED BAR
 				g2.setColor(new Color(255, 0, 30));
-				g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
+				g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10);
 
 				hpBarCounter++;
 

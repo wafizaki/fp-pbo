@@ -50,23 +50,24 @@ public class Player extends Entity {
 		direction = "down";
 
 //		PLAYER STATUS
-		level =1;
+		level = 1;
 		maxLife = 6;
 		life = maxLife;
-		strength =1;
-		dexterity =1;
+		strength = 1;
+		dexterity = 1;
 		exp = 0;
-		nextLevelExp=5;
-		coin =0;
+		nextLevelExp = 5;
+		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
 		attack = getAttack();
 		defense = getDefense();
 	}
-	
+
 	public int getAttack() {
 		return attack = strength * currentWeapon.attackValue;
 	}
+
 	public int getDefense() {
 		return defense = dexterity * currentShield.defenseValue;
 	}
@@ -241,13 +242,42 @@ public class Player extends Entity {
 		if (i != 999) {
 			if (gp.monster[i].invincible == false) {
 				gp.playSE(5);
-				gp.monster[i].life -= 1;
+
+				int damage = attack - gp.monster[i].defense;
+				if (damage < 0) {
+					damage = 0;
+				}
+
+				gp.monster[i].life -= damage;
+				gp.ui.addMessage(damage + " damage!");
 				gp.monster[i].invincible = true;
 				gp.monster[i].damageReaction();
+
+				if (gp.monster[i].life <= 0) {
+					gp.monster[i].dying = true;
+					gp.ui.addMessage("killed the " + gp.monster[i].name + "!");
+					gp.ui.addMessage("You gained: " + gp.monster[i].exp + " exp!");
+					exp += gp.monster[i].exp;
+					eheckLevelUp();
+				}
 			}
-			if (gp.monster[i].life <= 0) {
-				gp.monster[i].dying = true;
-			}
+		}
+	}
+
+	private void eheckLevelUp() {
+		if (exp >= nextLevelExp) {
+
+			level++;
+			nextLevelExp = nextLevelExp * 2;
+			maxLife += 2;
+			strength++;
+			dexterity++;
+			attack = getAttack();
+			defense = getDefense();
+			gp.playSE(8);
+			gp.gameState = gp.dialogueState;
+			gp.ui.currentDialogue = "You are level " + level + " now!\n" + "You feel stronger!";
+			
 		}
 	}
 
@@ -255,7 +285,13 @@ public class Player extends Entity {
 		if (i != 999) {
 			if (invincible == false) {
 				gp.playSE(6);
-				life -= 1;
+
+				int damage = gp.monster[i].attack - defense;
+				if (damage < 0) {
+					damage = 0;
+				}
+
+				life -= damage;
 				invincible = true;
 			}
 		}
@@ -282,22 +318,22 @@ public class Player extends Entity {
 				gp.playSE(1);
 				hasKey++;
 				gp.obj[i] = null;
-				gp.ui.showMessage("You got a key!");
+				gp.ui.addMessage("You got a key!");
 				break;
 			case "Door":
 				if (hasKey > 0) {
 					gp.playSE(3);
 					gp.obj[i] = null;
 					hasKey--;
-					gp.ui.showMessage("You opened the door!");
+					gp.ui.addMessage("You opened the door!");
 				} else
-					gp.ui.showMessage("Find more Key to open the door!");
+					gp.ui.addMessage("Find more Key to open the door!");
 				break;
 			case "Boots":
 				gp.playSE(2);
 				speed += 1.5;
 				gp.obj[i] = null;
-				gp.ui.showMessage("Speed up!");
+				gp.ui.addMessage("Speed up!");
 				break;
 			case "Chest":
 				gp.ui.isGameFinished = true;

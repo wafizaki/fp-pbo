@@ -95,6 +95,7 @@ public class EventHandler {
 			gp.player.attackCanceled = true;
 			gp.ui.currentDialogue = "Alhamdulillah bro";
 			gp.player.life = gp.player.maxLife;
+			gp.aSetter.setMonster();
 		}
 
 	}
