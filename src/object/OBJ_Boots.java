@@ -10,5 +10,6 @@ public class OBJ_Boots extends Entity {
 
 		name = "Boots";
 		down1 = setup("/objects/boots",gp.tileSize,gp.tileSize);
+		description= "[" + name + "]\nOld looking boots.";
 	}
 }

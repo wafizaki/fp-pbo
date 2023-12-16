@@ -17,7 +17,6 @@ public class Player extends Entity {
 	KeyHandler keyH;
 
 	public final int screenX, screenY;
-	public int hasKey = 0;
 	public boolean attackCanceled = false;
 	public ArrayList<Entity> inventory = new ArrayList<>();
 	public final int maxInventorySize = 20;
@@ -37,8 +36,8 @@ public class Player extends Entity {
 		solidArea.width = 20;
 		solidArea.height = 26;
 
-		attackArea.width = 36;
-		attackArea.height = 36;
+//		attackArea.width = 36;
+//		attackArea.height = 36;
 
 		setDefaultValues();
 		getPlayerImage();
@@ -67,15 +66,16 @@ public class Player extends Entity {
 		attack = getAttack();
 		defense = getDefense();
 	}
-	
+
 	public void setItems() {
-		
+
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new OBJ_Key(gp));
 	}
 
 	public int getAttack() {
+		attackArea = currentWeapon.attackArea;
 		return attack = strength * currentWeapon.attackValue;
 	}
 
@@ -100,6 +100,7 @@ public class Player extends Entity {
 	}
 
 	public void getPlayerAttackImage() {
+//		KALO MAU GANTI SPRITE SETIAP GANTI SENJATA INI DIBIKIN AJA IF DENGAN KONDISI CURRENTWEAPON.TYPE = TYPE_BLABLA
 		attackUp = setup("/player/attack_up", gp.tileSize, gp.tileSize * 2);
 		attackUp1 = setup("/player/attack_up_1", gp.tileSize, gp.tileSize * 2);
 		attackUp2 = setup("/player/attack_up_2", gp.tileSize, gp.tileSize * 2);
@@ -321,37 +322,49 @@ public class Player extends Entity {
 
 	public void pickUpObject(int i) {
 
-		if (i != 999) {
-			String objectName = gp.obj[i].name;
+		String text;
 
-			switch (objectName) {
-			case "Key":
+		if (i != 999) {
+			if (inventory.size() != maxInventorySize) {
+				inventory.add(gp.obj[i]);
 				gp.playSE(1);
-				hasKey++;
-				gp.obj[i] = null;
-				gp.ui.addMessage("You got a key!");
-				break;
-			case "Door":
-				if (hasKey > 0) {
-					gp.playSE(3);
-					gp.obj[i] = null;
-					hasKey--;
-					gp.ui.addMessage("You opened the door!");
-				} else
-					gp.ui.addMessage("Find more Key to open the door!");
-				break;
-			case "Boots":
-				gp.playSE(2);
-				speed += 1.5;
-				gp.obj[i] = null;
-				gp.ui.addMessage("Speed up!");
-				break;
-			case "Chest":
-				gp.ui.isGameFinished = true;
-				gp.stopMusic();
-				gp.playSE(4);
-				break;
+				text = "Got a " + gp.obj[i].name + "!";
+			} else {
+				text = "Your inventory is full!";
 			}
+			gp.ui.addMessage(text);
+			gp.obj[i] = null;
+
+//			String objectName = gp.obj[i].name;
+//
+//			switch (objectName) {
+//			case "Key":
+//				gp.playSE(1);
+//				hasKey++;
+//				gp.obj[i] = null;
+//				gp.ui.addMessage("You got a key!");
+//				break;
+//			case "Door":
+//				if (hasKey > 0) {
+//					gp.playSE(3);
+//					gp.obj[i] = null;
+//					hasKey--;
+//					gp.ui.addMessage("You opened the door!");
+//				} else
+//					gp.ui.addMessage("Find more Key to open the door!");
+//				break;
+//			case "Boots":
+//				gp.playSE(2);
+//				speed += 1.5;
+//				gp.obj[i] = null;
+//				gp.ui.addMessage("Speed up!");
+//				break;
+//			case "Chest":
+//				gp.ui.isGameFinished = true;
+//				gp.stopMusic();
+//				gp.playSE(4);
+//				break;
+//			}
 		}
 	}
 
@@ -488,6 +501,27 @@ public class Player extends Entity {
 //		g2.setFont(new Font("Arial", Font.PLAIN, 26));
 //		g2.setColor(Color.white);
 //		g2.drawString("Invincible:" + invincibleCounter, 10, 400);
+	}
+
+	public void selectItem() {
+		int itemIndex = gp.ui.getItemIndexOnSlot();
+
+		if (itemIndex < inventory.size()) {
+			Entity selectedItem = inventory.get(itemIndex);
+
+			if (selectedItem.type == type_sword || selectedItem.type == type_axe) {
+				currentWeapon = selectedItem;
+				attack = getAttack();
+				getPlayerAttackImage();
+			}
+			if (selectedItem.type == type_shield) {
+				currentShield = selectedItem;
+				defense = getDefense();
+			}if(selectedItem.type == type_consumable) {
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
+			}
+		}
 	}
 
 }
