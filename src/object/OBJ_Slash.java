@@ -14,7 +14,7 @@ public class OBJ_Slash extends Projectile {
 		speed = 5;
 		maxLife = 20;
 		life = maxLife;
-		attack = 1;
+		attack = 2;
 //		useCost=1;
 		alive = false;
 		getImage();

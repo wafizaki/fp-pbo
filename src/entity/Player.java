@@ -196,7 +196,7 @@ public class Player extends Entity {
 				invincibleCounter = 0;
 			}
 		}
-		if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30) {
+		if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 90) {
 //			SET DEFAULT COORDINATES, DIRECTION AND USE
 			projectile.set(worldX, worldY, direction, true, this);
 
@@ -204,9 +204,10 @@ public class Player extends Entity {
 			gp.projectileList.add(projectile);
 
 			shotAvailableCounter = 0;
+			attacking = true;
 			gp.playSE(7);
 		}
-		if (shotAvailableCounter < 30) {
+		if (shotAvailableCounter < 90) {
 			shotAvailableCounter++;
 		}
 	}
