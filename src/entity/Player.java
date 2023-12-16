@@ -10,6 +10,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
+import object.OBJ_Slash;
 import object.OBJ_Sword_Normal;
 
 public class Player extends Entity {
@@ -63,6 +64,7 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
+		projectile = new OBJ_Slash(gp);
 		attack = getAttack();
 		defense = getDefense();
 	}
@@ -194,6 +196,19 @@ public class Player extends Entity {
 				invincibleCounter = 0;
 			}
 		}
+		if (gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30) {
+//			SET DEFAULT COORDINATES, DIRECTION AND USE
+			projectile.set(worldX, worldY, direction, true, this);
+
+//			ADD PROJECTILE TO ARRAYLIST
+			gp.projectileList.add(projectile);
+
+			shotAvailableCounter = 0;
+			gp.playSE(7);
+		}
+		if (shotAvailableCounter < 30) {
+			shotAvailableCounter++;
+		}
 	}
 
 	private void attacking() {
@@ -232,7 +247,7 @@ public class Player extends Entity {
 			solidArea.height = attackArea.height;
 //			check monster collision with the updated worldx,worldy and solidarea
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 //			after checking collision, restore the original data
 
 			worldX = currentWorldX;
@@ -250,7 +265,7 @@ public class Player extends Entity {
 		}
 	}
 
-	private void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		if (i != 999) {
 			if (gp.monster[i].invincible == false) {
 				gp.playSE(5);
@@ -262,6 +277,7 @@ public class Player extends Entity {
 
 				gp.monster[i].life -= damage;
 				gp.ui.addMessage(damage + " damage!");
+
 				gp.monster[i].invincible = true;
 				gp.monster[i].damageReaction();
 
@@ -295,7 +311,7 @@ public class Player extends Entity {
 
 	private void contactMonster(int i) {
 		if (i != 999) {
-			if (invincible == false) {
+			if (invincible == false && gp.monster[i].dying == false) {
 				gp.playSE(6);
 
 				int damage = gp.monster[i].attack - defense;
@@ -517,7 +533,8 @@ public class Player extends Entity {
 			if (selectedItem.type == type_shield) {
 				currentShield = selectedItem;
 				defense = getDefense();
-			}if(selectedItem.type == type_consumable) {
+			}
+			if (selectedItem.type == type_consumable) {
 				selectedItem.use(this);
 				inventory.remove(itemIndex);
 			}
