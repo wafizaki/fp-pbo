@@ -25,6 +25,8 @@ public class UI {
 	BufferedImage heart_full, heart_half, heart_blank;
 	ArrayList<String> message = new ArrayList<>();
 	ArrayList<Integer> messageCounter = new ArrayList<>();
+	public int slotCol = 0;
+	public int slotRow = 0;
 
 	double playTime;
 	DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -81,6 +83,7 @@ public class UI {
 //		CHARACTER STATE
 		if (gp.gameState == gp.characterState) {
 			drawCharacterScreen();
+			drawInventory();
 		}
 
 		if (isGameFinished == true) {
@@ -129,6 +132,72 @@ public class UI {
 		}
 	}
 
+	private void drawInventory() {
+
+		int frameX = gp.tileSize * 9;
+		int frameY = gp.tileSize;
+		int frameWidth = gp.tileSize * 6;
+		int frameHeight = gp.tileSize * 5;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+//		SLOT
+		final int slotXstart = frameX + 20;
+		final int slotYstart = frameY + 20;
+		int slotX = slotXstart;
+		int slotY = slotYstart;
+		int slotSize = gp.tileSize + 3;
+
+//		CURSOR
+		int cursorX = slotXstart + (slotSize * slotCol);
+		int cursorY = slotYstart + (slotSize * slotRow);
+		int cursorWidth = gp.tileSize;
+		int cursorHeight = gp.tileSize;
+
+//		DRAW CURSOR
+		g2.setColor(Color.white);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+
+//		DRAW PLAYER'S ITEM
+		for (int i = 0; i < gp.player.inventory.size(); i++) {
+
+			g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
+
+			slotX += slotSize;
+			if (i == 4 || i == 9 || i == 14) {
+				slotX = slotXstart;
+				slotY += slotSize;
+			}
+		}
+
+//		DESCRPIPTION FRAME
+		int dFrameX = frameX;
+		int dFrameY = frameY + frameHeight;
+		int dFrameWidth = frameWidth;
+		int dFrameHeight = gp.tileSize * 3;
+		drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+
+//		DRAW DESCRPTION TEXT
+		int textX = dFrameX + 20;
+		int textY = dFrameY + 32;
+		g2.setFont(g2.getFont().deriveFont(12F));
+
+		int itemIndex = getItemIndexOnSlot();
+		if (itemIndex < gp.player.inventory.size()) {
+
+			for (String line : gp.player.inventory.get(itemIndex).description.split("\n")) {
+				g2.drawString(line, textX, textY);
+				textY += 24;
+
+			}
+		}
+	}
+
+	public int getItemIndexOnSlot() {
+		int itemIndex = slotCol + (slotRow * 5);
+		return itemIndex;
+	}
+
 	private void drawMessage() {
 		int messageX = gp.tileSize;
 		int messageY = gp.tileSize * 4;
@@ -138,7 +207,7 @@ public class UI {
 			if (message.get(i) != null) {
 
 				g2.setColor(Color.black);
-				g2.drawString(message.get(i), messageX+2, messageY+2);
+				g2.drawString(message.get(i), messageX + 2, messageY + 2);
 				g2.setColor(Color.white);
 				g2.drawString(message.get(i), messageX, messageY);
 

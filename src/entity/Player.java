@@ -4,9 +4,11 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 
@@ -17,6 +19,8 @@ public class Player extends Entity {
 	public final int screenX, screenY;
 	public int hasKey = 0;
 	public boolean attackCanceled = false;
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int maxInventorySize = 20;
 
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
@@ -39,7 +43,7 @@ public class Player extends Entity {
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
-
+		setItems();
 	}
 
 	public void setDefaultValues() {
@@ -62,6 +66,13 @@ public class Player extends Entity {
 		currentShield = new OBJ_Shield_Wood(gp);
 		attack = getAttack();
 		defense = getDefense();
+	}
+	
+	public void setItems() {
+		
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
+		inventory.add(new OBJ_Key(gp));
 	}
 
 	public int getAttack() {
@@ -277,7 +288,7 @@ public class Player extends Entity {
 			gp.playSE(8);
 			gp.gameState = gp.dialogueState;
 			gp.ui.currentDialogue = "You are level " + level + " now!\n" + "You feel stronger!";
-			
+
 		}
 	}
 

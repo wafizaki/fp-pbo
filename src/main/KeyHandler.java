@@ -47,7 +47,7 @@ public class KeyHandler implements KeyListener {
 			characterState(code);
 		}
 	}
-	
+
 	public void titleState(int code) {
 		if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 			gp.ui.commandNum--;
@@ -74,7 +74,7 @@ public class KeyHandler implements KeyListener {
 			}
 		}
 	}
-	
+
 	public void playState(int code) {
 		if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
 			upPressed = true;
@@ -105,26 +105,59 @@ public class KeyHandler implements KeyListener {
 			} else if (showDebugText == true) {
 				showDebugText = false;
 			}
-		}if(code == KeyEvent.VK_R) {
+		}
+		if (code == KeyEvent.VK_R) {
 			gp.tileM.loadMap("/maps/worldV2.txt");
 		}
 	}
-	
+
 	public void pauseState(int code) {
 		if (code == KeyEvent.VK_P) {
 			gp.gameState = gp.playState;
 		}
 	}
-	
+
 	public void dialogueState(int code) {
 		if (code == KeyEvent.VK_ENTER) {
 			gp.gameState = gp.playState;
 		}
 	}
-	
+
 	public void characterState(int code) {
 		if (code == KeyEvent.VK_C) {
 			gp.gameState = gp.playState;
+			gp.playSE(9);
+		}
+		if (code == KeyEvent.VK_W) {
+				gp.ui.slotRow--;
+				gp.playSE(9);
+			if(gp.ui.slotRow < 0) {
+				gp.ui.slotRow=3;
+			}
+
+		}
+		if (code == KeyEvent.VK_A) {
+			gp.ui.slotCol--;
+			gp.playSE(9);
+			if(gp.ui.slotCol < 0) {
+				gp.ui.slotCol=4;
+			}
+
+		}
+		if (code == KeyEvent.VK_S) {
+			gp.ui.slotRow++;
+			gp.playSE(9);
+			if(gp.ui.slotRow > 3) {
+				gp.ui.slotRow=0;
+			}
+
+		}
+		if (code == KeyEvent.VK_D) {
+			gp.ui.slotCol++;
+			gp.playSE(9);
+			if(gp.ui.slotCol > 4) {
+				gp.ui.slotCol=0;
+			}
 		}
 	}
 
