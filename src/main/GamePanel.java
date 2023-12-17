@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -30,8 +31,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int screenHeight = tileSize * maxScreenRow;
 
 	// setting u/ world
-	public final int maxWorldCol = 50;
-	public final int maxWorldRow = 50;
+	public final int maxWorldCol = 61;
+	public final int maxWorldRow = 61;
 
 //	FOR FULL SCREEN
 	int screenWidth2 = screenWidth;
@@ -239,6 +240,28 @@ public class GamePanel extends JPanel implements Runnable {
 			entityList.clear();
 			// UI
 			ui.draw(g2);
+//			 DEBUG
+			if (keyH.showDebugText == true) {
+				long drawEnd = System.nanoTime();
+				long passed = drawEnd - drawStart;
+	
+				g2.setFont(new Font("Arial", Font.BOLD, 18));
+				g2.setColor(Color.white);
+				int x = 10;
+				int y = 400;
+				int lineHeight = 20;
+	
+				g2.drawString("WorldX: " + player.worldX, x, y);
+				y += lineHeight;
+				g2.drawString("WorldY: " + player.worldY, x, y);
+				y += lineHeight;
+				g2.drawString("Col: " + (player.worldX + player.solidArea.x) / tileSize, x, y);
+				y += lineHeight;
+				g2.drawString("Row: " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+				y += lineHeight;
+	
+				g2.drawString("Draw Time: " + passed, x, y);
+			}
 		}
 	}
 

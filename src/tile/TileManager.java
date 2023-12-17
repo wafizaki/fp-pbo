@@ -20,11 +20,11 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 
-		tile = new Tile[50];
+		tile = new Tile[100];
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
 		getTileImage();
-		loadMap("/maps/worldV2.txt");
+		loadMap("/maps/finalmap.txt");
 
 	}
 
@@ -76,6 +76,52 @@ public class TileManager {
 		setup(40, "wall", true);
 		setup(41, "palm2", true);
 		setup(42, "hut", true);
+		setup(43, "floor01", false);
+		setup(44, "sand", false);
+		setup(45, "table01", true);
+		setup(46, "tile000", false);
+		setup(47, "tile001", true);
+		setup(48, "tile002", true);
+		setup(49, "tile003", true);
+		setup(50, "tile005", true);
+		setup(51, "tile006", true);
+		setup(52, "tile007", true);
+		setup(53, "tile008", true);
+		setup(54, "tile010", true);
+		setup(55, "tile011", true);
+		setup(56, "tile012", true);
+		setup(57, "tile013", true);
+		setup(58, "tile015", true);
+		setup(59, "tile016", true);
+		setup(60, "tile017", true);
+		setup(61, "tile018", true);
+		setup(62, "tile020", false);
+		setup(63, "tile021", false);
+		setup(64, "tile022", false);
+		setup(65, "tile023", false);
+		setup(66, "house01", true);
+		setup(67, "house02", true);
+		setup(68, "house05", true);
+		setup(69, "house06", true);
+		setup(70, "house09", true);
+		setup(71, "house10", true);
+		setup(72, "house13", false);
+		setup(73, "house14", false);
+		setup(74, "brokenTree1", true);
+		// setup(76, "tile017", true);
+		// setup(77, "tile017", true);
+		// setup(78, "tile017", true);
+		// setup(79, "tile017", true);
+		// setup(80, "tile017", true);
+		// setup(81, "tile017", true);
+		// setup(82, "house01", true);
+		// setup(83, "house02", true);
+		// setup(84, "house05", true);
+		// setup(85, "house06", true);
+		// setup(86, "house09", true);
+		// setup(87, "house10", true);
+		// setup(88, "house13", true);
+		// setup(89, "house14", true);
 
 	}
 
@@ -96,7 +142,7 @@ public class TileManager {
 
 	public void loadMap(String string) {
 		try {
-			InputStream is = getClass().getResourceAsStream("/maps/worldV2.txt");
+			InputStream is = getClass().getResourceAsStream("/maps/finalmap.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 			int col = 0;
