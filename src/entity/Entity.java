@@ -68,6 +68,7 @@ public class Entity {
 	public int attackValue;
 	public int defenseValue;
 	public String description = "";
+	public int value;
 //	public int useCost;
 
 //	TYPE
@@ -79,6 +80,7 @@ public class Entity {
 	public final int type_axe = 4;
 	public final int type_shield = 5;
 	public final int type_consumable = 6;
+	public final int type_pickupOnly = 7;
 
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -119,6 +121,22 @@ public class Entity {
 		}
 	}
 
+	public void checkDrop() {
+		
+	}
+
+	public void dropItem(Entity droppedItem) {
+
+		for (int i = 0; i < gp.obj.length; i++) {
+			if (gp.obj[i] == null) {
+				gp.obj[i] = droppedItem;
+				gp.obj[i].worldX = worldX;
+				gp.obj[i].worldY = worldY;
+				break;
+			}
+		}
+	}
+
 	public void update() {
 		setAction();
 
@@ -130,17 +148,7 @@ public class Entity {
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
 		if (this.type == type_monster && contactPlayer == true) {
-			if (gp.player.invincible == false) {
-//				we can give damage
-				gp.playSE(6);
-
-				int damage = attack - gp.player.defense;
-				if (damage < 0) {
-					damage = 0;
-				}
-				gp.player.life -= damage;
-				gp.player.invincible = true;
-			}
+			damagePlayer(attack);
 		}
 		if (collisionOn == false) {
 
@@ -179,6 +187,9 @@ public class Entity {
 				invincible = false;
 				invincibleCounter = 0;
 			}
+		}
+		if (shotAvailableCounter < 90) {
+			shotAvailableCounter++;
 		}
 	}
 
@@ -293,9 +304,24 @@ public class Entity {
 			if (dying == true) {
 				dyingAnimation(g2);
 			}
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(image, screenX, screenY, null);
 			changeAlpha(g2, 1F);
 		}
+	}
+
+	public void damagePlayer(int attack) {
+		if (gp.player.invincible == false) {
+//			we can give damage
+			gp.playSE(6);
+
+			int damage = attack - gp.player.defense;
+			if (damage < 0) {
+				damage = 0;
+			}
+			gp.player.life -= damage;
+			gp.player.invincible = true;
+		}
+
 	}
 
 	private void dyingAnimation(Graphics2D g2) {
@@ -337,4 +363,6 @@ public class Entity {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
 
 	}
+
+	
 }

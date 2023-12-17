@@ -210,6 +210,9 @@ public class Player extends Entity {
 		if (shotAvailableCounter < 90) {
 			shotAvailableCounter++;
 		}
+		if(life > maxLife) {
+			life = maxLife;
+		}
 	}
 
 	private void attacking() {
@@ -339,18 +342,27 @@ public class Player extends Entity {
 
 	public void pickUpObject(int i) {
 
-		String text;
-
 		if (i != 999) {
-			if (inventory.size() != maxInventorySize) {
-				inventory.add(gp.obj[i]);
-				gp.playSE(1);
-				text = "Got a " + gp.obj[i].name + "!";
-			} else {
-				text = "Your inventory is full!";
+
+//			PICKUP ONLY ITEMS
+			if (gp.obj[i].type == type_pickupOnly) {
+
+				gp.obj[i].use(this);
+				gp.obj[i] = null;
 			}
-			gp.ui.addMessage(text);
-			gp.obj[i] = null;
+//			INVENTORY ITEMS
+			else {
+				String text;
+				if (inventory.size() != maxInventorySize) {
+					inventory.add(gp.obj[i]);
+					gp.playSE(1);
+					text = "Got a " + gp.obj[i].name + "!";
+				} else {
+					text = "Your inventory is full!";
+				}
+				gp.ui.addMessage(text);
+				gp.obj[i] = null;
+			}
 
 //			String objectName = gp.obj[i].name;
 //

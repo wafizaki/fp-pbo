@@ -23,12 +23,16 @@ public class Projectile extends Entity {
 		if (user == gp.player) {
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
 			if (monsterIndex != 999) {
-				gp.player.damageMonster(monsterIndex,attack);
-				alive=false;
+				gp.player.damageMonster(monsterIndex, attack);
+				alive = false;
 			}
 		}
 		if (user != gp.player) {
-//			NANTI
+			boolean contactPlayer = gp.cChecker.checkPlayer(this);
+			if (gp.player.invincible == false && contactPlayer == true) {
+				damagePlayer(attack);
+				alive = false;
+			}
 		}
 		switch (direction) {
 		case "up":
