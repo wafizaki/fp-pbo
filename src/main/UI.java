@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.awt.FontMetrics;
+
 import entity.Entity;
 import object.OBJ_Heart;
 
@@ -171,9 +171,7 @@ public class UI {
 		// MAIN COLOR
 		g2.setColor(Color.white);
 		g2.drawString(text, x, y);
-		if (commandNum == 0) {
 			g2.drawString(">", x - 48, y);
-		}
 	}
 
 	private void drawCreditsScreen() {
@@ -232,7 +230,7 @@ public class UI {
 			case 1:
 				options_control(frameX, frameY);
 				break;
-			case 2:
+			case 4:
 				options_endGameConfirmation(frameX, frameY);
 				break;
 		}
@@ -354,20 +352,47 @@ public class UI {
 			}
 		}
 
+//		MUSIC
+		textX = frameX + gp.tileSize;
+		textY += gp.tileSize;
+		g2.drawString("Music", textX, textY);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRect(textX + 264, textY-24, 120, 24);
+		int volumeWidth = 24*gp.music.volumeScale;
+		g2.fillRect(textX + 264, textY-24, volumeWidth, 24);
+		if (commandNum == 1) {
+			g2.drawString(">", textX - 24, textY);
+			
+		}
+		
+//		SOUND EFFECT
+		
+		textX = frameX + gp.tileSize;
+		textY += gp.tileSize;
+		g2.drawString("Sound Effects", textX, textY);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRect(textX + 264, textY-24, 120, 24);
+		volumeWidth = 24*gp.se.volumeScale;
+		g2.fillRect(textX + 264, textY-24, volumeWidth, 24);
+		if (commandNum == 2) {
+			g2.drawString(">", textX - 24, textY);
+			
+		}
+
 		// END GAME
 		textY += gp.tileSize;
 		g2.drawString("End Game", textX, textY);
-		if (commandNum == 1) {
+		if (commandNum == 3) {
 			g2.drawString(">", textX - 24, textY);
 			if (gp.keyH.enterPressed == true) {
-				subState = 2;
+				subState = 4;
 				commandNum = 0;
 			}
 		}
 		// BACK
-		textY += gp.tileSize * 5;
+		textY += gp.tileSize * 4;
 		g2.drawString("Back", textX, textY);
-		if (commandNum == 2) {
+		if (commandNum == 4) {
 			g2.drawString(">", textX - 24, textY);
 			if (gp.keyH.enterPressed == true) {
 				gp.gameState = gp.playState;

@@ -57,7 +57,9 @@ public class KeyHandler implements KeyListener {
 		// GAME OVER
 		else if (gp.gameState == gp.gameOverState) {
 			gameOverState(code);
-		} else if (gp.gameState == gp.creditsState) {
+		}
+//		CREDITS STATE
+		else if (gp.gameState == gp.creditsState) {
 			creditsState(code);
 		}
 	}
@@ -90,54 +92,89 @@ public class KeyHandler implements KeyListener {
 
 	private void optionsState(int code) {
 		if (code == KeyEvent.VK_ESCAPE) {
+			gp.playSE(9);
 			gp.gameState = gp.playState;
 		}
 		if (code == KeyEvent.VK_ENTER) {
+			gp.playSE(9);
 			enterPressed = true;
 		}
 
 		int maxCommandNum = 0;
 		switch (gp.ui.subState) {
-			case 0:
-				maxCommandNum = 2;
-				break;
-			case 2:
-				maxCommandNum = 1;
-				break;
+//		UTAMA
+		case 0:
+			maxCommandNum = 4;
+			break;
+//		CONTROL
+		case 1:
+			maxCommandNum = 0;
+			break;
+//			END GAME
+		case 4:
+			maxCommandNum = 1;
+			break;
 		}
 		if (code == KeyEvent.VK_W) {
 			gp.ui.commandNum--;
+			gp.playSE(9);
 			if (gp.ui.commandNum < 0) {
 				gp.ui.commandNum = maxCommandNum;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			gp.ui.commandNum++;
+			gp.playSE(9);
 			if (gp.ui.commandNum > maxCommandNum) {
 				gp.ui.commandNum = 0;
 			}
 		}
+		if (code == KeyEvent.VK_A) {
+			if (gp.ui.subState == 0) {
+				if (gp.ui.commandNum == 1 && gp.music.volumeScale > 0) {
+					gp.music.volumeScale--;
+					gp.music.checkVolume();
+					gp.playSE(9);
+				}
+				if (gp.ui.commandNum == 2 && gp.music.volumeScale > 0) {
+					gp.se.volumeScale--;
+					gp.playSE(9);
+				}
+			}
+		}
+		if (code == KeyEvent.VK_D) {
+			if (gp.ui.commandNum == 1 && gp.music.volumeScale < 5) {
+				gp.music.volumeScale++;
+				gp.music.checkVolume();
+				gp.playSE(9);
+			}
+			if (gp.ui.commandNum == 2 && gp.music.volumeScale < 5) {
+				gp.se.volumeScale++;
+				gp.playSE(9);
+			}
+		}
+
 	}
 
 	public void winState(int code) {
 		if (code == KeyEvent.VK_ENTER) {
-			if (gp.ui.commandNum == 0) {
 				gp.gameState = gp.titleState;
 				gp.stopMusic();
 				gp.restart();
-			}
 
 		}
 	}
 
 	public void titleState(int code) {
 		if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+			gp.playSE(9);
 			gp.ui.commandNum--;
 			if (gp.ui.commandNum < 0) {
 				gp.ui.commandNum = 2;
 			}
 		}
 		if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+			gp.playSE(9);
 			gp.ui.commandNum++;
 			if (gp.ui.commandNum > 2) {
 				gp.ui.commandNum = 0;

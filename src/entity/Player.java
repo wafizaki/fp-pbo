@@ -398,10 +398,9 @@ public class Player extends Entity {
 					removeKey();
 				}
 			} else if (gp.obj[i].type == type_chest) {
-				gp.gameState = gp.winState;
 				gp.stopMusic();
 				gp.playMusic(10);
-
+				gp.gameState = gp.winState;
 			}
 
 		}
