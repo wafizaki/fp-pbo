@@ -24,39 +24,41 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		int code = e.getKeyCode();
-//		TITILE STATE
+		// TITILE STATE
 		if (gp.gameState == gp.titleState) {
 			titleState(code);
 		}
-//		PLAY STATE
+		// PLAY STATE
 		else if (gp.gameState == gp.playState) {
 			playState(code);
 		}
-//		PAUSE STATE
+		// PAUSE STATE
 		else if (gp.gameState == gp.pauseState) {
 			pauseState(code);
 		}
 
-//		DIALOGUE STATE
+		// DIALOGUE STATE
 		else if (gp.gameState == gp.dialogueState) {
 			dialogueState(code);
 		}
 
-//		CHARACTER STATE
+		// CHARACTER STATE
 		else if (gp.gameState == gp.characterState) {
 			characterState(code);
 		}
-//		OPTIONS STATE
+		// OPTIONS STATE
 		else if (gp.gameState == gp.optionsState) {
 			optionsState(code);
 		}
-//		ENDING SCREEN
-		else if(gp.gameState == gp.winState) {
+		// ENDING SCREEN
+		else if (gp.gameState == gp.winState) {
 			winState(code);
 		}
-//		GAME OVER
-		else if(gp.gameState == gp.gameOverState) {
+		// GAME OVER
+		else if (gp.gameState == gp.gameOverState) {
 			gameOverState(code);
+		} else if (gp.gameState == gp.creditsState) {
+			creditsState(code);
 		}
 	}
 
@@ -96,12 +98,12 @@ public class KeyHandler implements KeyListener {
 
 		int maxCommandNum = 0;
 		switch (gp.ui.subState) {
-		case 0:
-			maxCommandNum = 2;
-			break;
-		case 2:
-			maxCommandNum = 1;
-			break;
+			case 0:
+				maxCommandNum = 2;
+				break;
+			case 2:
+				maxCommandNum = 1;
+				break;
 		}
 		if (code == KeyEvent.VK_W) {
 			gp.ui.commandNum--;
@@ -117,13 +119,14 @@ public class KeyHandler implements KeyListener {
 		}
 	}
 
-	public void winState(int code) {		
+	public void winState(int code) {
 		if (code == KeyEvent.VK_ENTER) {
 			if (gp.ui.commandNum == 0) {
 				gp.gameState = gp.titleState;
+				gp.stopMusic();
 				gp.restart();
 			}
-			
+
 		}
 	}
 
@@ -146,7 +149,7 @@ public class KeyHandler implements KeyListener {
 				gp.playMusic(0);
 			}
 			if (gp.ui.commandNum == 1) {
-//				NANTI YAH
+				gp.gameState = gp.creditsState;
 			}
 			if (gp.ui.commandNum == 2) {
 				System.exit(0);
@@ -246,6 +249,13 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_ENTER) {
 			gp.player.selectItem();
+		}
+	}
+
+	private void creditsState(int code) {
+		if (code == KeyEvent.VK_ENTER) {
+			gp.gameState = gp.titleState;
+			gp.ui.commandNum = 0;
 		}
 	}
 
