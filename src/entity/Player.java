@@ -68,9 +68,20 @@ public class Player extends Entity {
 		attack = getAttack();
 		defense = getDefense();
 	}
+	
+	public void setDefaultPositions() {
+		worldX = gp.tileSize * 12;
+		worldY = gp.tileSize * 10;
+		direction = "down";
+	}
+	
+	public void restore() {
+		life = maxLife;
+		invincible = false;
+	}
 
 	public void setItems() {
-
+		inventory.clear();
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 	}
@@ -212,6 +223,9 @@ public class Player extends Entity {
 		}
 		if (life > maxLife) {
 			life = maxLife;
+		}
+		if(life <= 0) {
+			gp.gameState = gp.gameOverState;
 		}
 	}
 
@@ -377,6 +391,7 @@ public class Player extends Entity {
 				}
 			} else if (gp.obj[i].type == type_chest) {
 				gp.gameState = gp.winState;
+				gp.stopMusic();
 
 			}
 

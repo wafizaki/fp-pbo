@@ -70,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int characterState = 4;
 	public final int optionsState = 5;
 	public final int winState = 6;
+	public final int gameOverState = 7;
 
 	public GamePanel() {
 
@@ -92,6 +93,21 @@ public class GamePanel extends JPanel implements Runnable {
 		g2 = (Graphics2D) tempScreen.getGraphics();
 
 		setFullScreen();
+	}
+	
+	public void retry() {
+		player.setDefaultPositions();
+		player.restore();
+		aSetter.setNPC();
+		aSetter.setMonster();
+	}
+	
+	public void restart() {
+		player.setDefaultValues();
+		player.setItems();
+		aSetter.setObject();
+		aSetter.setNPC();
+		aSetter.setMonster();
 	}
 
 	public void startGameThread() {
@@ -245,13 +261,13 @@ public class GamePanel extends JPanel implements Runnable {
 			if (keyH.showDebugText == true) {
 				long drawEnd = System.nanoTime();
 				long passed = drawEnd - drawStart;
-	
+
 				g2.setFont(new Font("Arial", Font.BOLD, 18));
 				g2.setColor(Color.white);
 				int x = 10;
 				int y = 400;
 				int lineHeight = 20;
-	
+
 				g2.drawString("WorldX: " + player.worldX, x, y);
 				y += lineHeight;
 				g2.drawString("WorldY: " + player.worldY, x, y);
@@ -260,7 +276,7 @@ public class GamePanel extends JPanel implements Runnable {
 				y += lineHeight;
 				g2.drawString("Row: " + (player.worldY + player.solidArea.y) / tileSize, x, y);
 				y += lineHeight;
-	
+
 				g2.drawString("Draw Time: " + passed, x, y);
 			}
 		}

@@ -91,11 +91,56 @@ public class UI {
 //		WIN STATE
 		if (gp.gameState == gp.winState) {
 			drawWinScreen();
-		} 
+		}
+//		GAME OVER
+		if (gp.gameState == gp.gameOverState) {
+			drawGameOverScreen();
+		}
+	}
+
+	private void drawGameOverScreen() {
+		g2.setColor(new Color(0, 0, 0, 150));
+		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+		int x;
+		int y;
+		String text;
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+
+		text = "Game Over";
+//		SHADOW
+		g2.setColor(Color.black);
+		x = getXforCenteredText(text);
+		y = gp.tileSize * 4;
+		g2.drawString(text, x, y);
+//		MAIN
+		g2.setColor(Color.white);
+		x = getXforCenteredText(text);
+		y = gp.tileSize * 4;
+		g2.drawString(text, x - 4, y - 4);
+
+//		RETRY
+		g2.setFont(g2.getFont().deriveFont(32F));
+		text = "Retry";
+		x = getXforCenteredText(text);
+		y += gp.tileSize * 4;
+		g2.drawString(text, x, y);
+		if(commandNum == 0) {
+			g2.drawString(">", x-48, y);
+		}
+//		MAIN MENU
+		text="Main menu";
+		x = getXforCenteredText(text);
+		y += gp.tileSize*2;
+		g2.drawString(text, x, y);
+		if(commandNum == 1) {
+			g2.drawString(">", x-48, y);
+		}
+		
 	}
 
 	private void drawWinScreen() {
-		g2.setColor(new Color(0, 0, 0));
+		g2.setColor(new Color(0, 0, 0,150));
 		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 //		TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 55F));
@@ -112,21 +157,18 @@ public class UI {
 
 //		MENU
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36));
-
-		text = "NEW GAME";
-		x = getXforCenteredText(text);
-		y += gp.tileSize * 3.5;
+		
 //		SHADOW
+		text ="MAIN MENU";
+		x =getXforCenteredText(text);
+		y += gp.tileSize * 3.5;
 		g2.setColor(Color.gray);
 		g2.drawString(text, x + 5, y + 5);
 //		MAIN COLOR
 		g2.setColor(Color.white);
 		g2.drawString(text, x, y);
-		if (commandNum == 0) {
-			g2.setColor(Color.gray);
-			g2.drawString(">", x - gp.tileSize + 3, y + 3);
-			g2.setColor(Color.white);
-			g2.drawString(">", x - gp.tileSize, y);
+		if(commandNum == 0) {
+			g2.drawString(">", x-48, y);
 		}
 	}
 
@@ -183,11 +225,11 @@ public class UI {
 		g2.drawString("Debug", textX, textY);
 		textY += gp.tileSize;
 		g2.drawString("Back", textX, textY);
-		if(commandNum==0) {
-			g2.drawString(">", textX-25, textY);
-			if(gp.keyH.enterPressed==true) {
-				subState=0;
-				commandNum=0;
+		if (commandNum == 0) {
+			g2.drawString(">", textX - 25, textY);
+			if (gp.keyH.enterPressed == true) {
+				subState = 0;
+				commandNum = 0;
 			}
 		}
 
@@ -258,7 +300,6 @@ public class UI {
 		textX = getXforCenteredText(text);
 		textY = frameY + gp.tileSize;
 		g2.drawString(text, textX, textY);
-
 
 //		CONTROL
 		textX = frameX + gp.tileSize;
