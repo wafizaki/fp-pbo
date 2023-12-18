@@ -19,7 +19,7 @@ public class OBJ_Boots extends Entity {
 
 		gp.gameState = gp.dialogueState;
 		gp.ui.currentDialogue = "You suddenly\nfeel faster!";
-		entity.speed =5;
+		entity.speed +=1;
 		gp.playSE(2);
 
 	}

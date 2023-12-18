@@ -484,11 +484,11 @@ public class UI {
 
 		// TEXT
 		g2.setColor(Color.white);
-		g2.setFont(g2.getFont().deriveFont(18F));
+		g2.setFont(g2.getFont().deriveFont(14F));
 
 		int textX = frameX + 20;
 		int textY = frameY + gp.tileSize;
-		final int lineHeight = 38;
+		final int lineHeight = 34;
 
 		// NAMES
 		g2.drawString("Level", textX, textY);
@@ -508,6 +508,8 @@ public class UI {
 		g2.drawString("Next Level", textX, textY);
 		textY += lineHeight;
 		g2.drawString("Coin", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Key", textX, textY);
 		textY += lineHeight + 20;
 		g2.drawString("Weapon", textX, textY);
 		textY += lineHeight + 15;
@@ -556,10 +558,14 @@ public class UI {
 		textX = getXforAlignToRightText(value, tailX);
 		g2.drawString(value, textX, textY);
 		textY += lineHeight;
+		value = String.valueOf(gp.player.hasKey);
+		textX = getXforAlignToRightText(value, tailX);
+		g2.drawString(value, textX, textY);
+		textY += lineHeight;
 
-		g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY - 15, null);
+		g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY-15, null);
 		textY += gp.tileSize;
-		g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 15, null);
+		g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY-15, null);
 		textY += gp.tileSize;
 	}
 
@@ -622,7 +628,7 @@ public class UI {
 		// MENU
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36));
 
-		text = "NEW GAME";
+		text = "PLAY";
 		x = getXforCenteredText(text);
 		y += gp.tileSize * 3.5;
 		// SHADOW

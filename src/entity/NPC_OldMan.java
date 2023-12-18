@@ -33,11 +33,11 @@ public class NPC_OldMan extends Entity {
 	}
 	
 	public void setDialogue() {
-		dialogue[0] = "Wassup bro";
-		dialogue[1] = "Aye how u been big bro?";
-		dialogue[2] = "Man its been a minute";
-		dialogue[3] = "Aye yo my G";
-		dialogue[4]= "BROOOOO THIS SHIT CRAZY\nAYE YOU GOTTA CHECK'EM OUT\nBIG BRO";
+		dialogue[0] = "Hail and well met, young traveler!\nHow dost thou fare on this enchanted\nday?!";
+		dialogue[1] = "The key thou seeketh lies concealed,\na hidden key behind yon colossal tree!";
+		dialogue[2] = "Take heed, brave adventurer, as you\nembark upon thy journey. Perils may\nlie ahead, so tread carefully and may\nfortune favor thee";
+		dialogue[3] = "Once, in the days of yore, I was a\nformidable wizard, weaving spells and \nwielding the arcane with great prowess.";
+		dialogue[4]= "Behind the colossal tree, lies thou\nfirst step on thou journey";
 	}
 
 	public void setAction() {
