@@ -10,7 +10,7 @@ public class OBJ_Shield_Normal extends Entity{
 		type=type_shield;
 		name = "Blue Shield";
 		down1 = setup("/objects/shield_blue",gp.tileSize,gp.tileSize);
-		description= "[" + name + "]\nLooks more durable\nI feel safe!";
+		description= "[" + name + "]\nLooks more durable\nI feel safe!\nPress [ENTER]";
 		defenseValue=4;
 	}
 	

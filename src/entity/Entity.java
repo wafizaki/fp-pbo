@@ -58,6 +58,7 @@ public class Entity {
 	public int exp;
 	public int nextLevelExp;
 	public int coin;
+	public int hasKey;
 	public Entity currentWeapon;
 	public Entity currentShield;
 //	public int maxMana;
@@ -81,6 +82,9 @@ public class Entity {
 	public final int type_shield = 5;
 	public final int type_consumable = 6;
 	public final int type_pickupOnly = 7;
+	public final int type_door = 8;
+	public final int type_chest = 9;
+	public final int type_key = 10;
 
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -122,7 +126,7 @@ public class Entity {
 	}
 
 	public void checkDrop() {
-		
+
 	}
 
 	public void dropItem(Entity droppedItem) {
@@ -364,5 +368,4 @@ public class Entity {
 
 	}
 
-	
 }

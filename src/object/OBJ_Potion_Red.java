@@ -13,7 +13,7 @@ public class OBJ_Potion_Red extends Entity {
 		name = "Healing Potion";
 		value = 5;
 		down1 = setup("/objects/potion_red", gp.tileSize, gp.tileSize);
-		description = "[" + name + "]\nHeals your life\nby " + value + ".";
+		description = "[" + name + "]\nHeals your life\nby " + value + ".\nPress [ENTER]";
 	}
 
 	public void use(Entity entity) {

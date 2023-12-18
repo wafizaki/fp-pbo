@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Slash;
 import object.OBJ_Sword_Normal;
@@ -50,7 +49,7 @@ public class Player extends Entity {
 		// player starting potition
 		worldX = gp.tileSize * 12;
 		worldY = gp.tileSize * 10;
-		speed = 4;
+		speed = 3;
 		direction = "down";
 
 		// PLAYER STATUS
@@ -62,6 +61,7 @@ public class Player extends Entity {
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
+		hasKey=0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
 		projectile = new OBJ_Slash(gp);
@@ -73,7 +73,6 @@ public class Player extends Entity {
 
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
-		inventory.add(new OBJ_Key(gp));
 	}
 
 	public int getAttack() {
@@ -153,18 +152,18 @@ public class Player extends Entity {
 			if (collisionOn == false && keyH.enterPressed == false) {
 
 				switch (direction) {
-					case "up":
-						worldY -= speed;
-						break;
-					case "down":
-						worldY += speed;
-						break;
-					case "left":
-						worldX -= speed;
-						break;
-					case "right":
-						worldX += speed;
-						break;
+				case "up":
+					worldY -= speed;
+					break;
+				case "down":
+					worldY += speed;
+					break;
+				case "left":
+					worldX -= speed;
+					break;
+				case "right":
+					worldX += speed;
+					break;
 				}
 			}
 			if (keyH.enterPressed == true && attackCanceled == false) {
@@ -233,18 +232,18 @@ public class Player extends Entity {
 
 			// ADJUST PLAYER'S WORLD X/Y FOR THE ATTACKAREA
 			switch (direction) {
-				case "up":
-					worldY -= attackArea.height;
-					break;
-				case "down":
-					worldY += attackArea.height;
-					break;
-				case "right":
-					worldX += attackArea.width;
-					break;
-				case "left":
-					worldX -= attackArea.width;
-					break;
+			case "up":
+				worldY -= attackArea.height;
+				break;
+			case "down":
+				worldY += attackArea.height;
+				break;
+			case "right":
+				worldX += attackArea.width;
+				break;
+			case "left":
+				worldX -= attackArea.width;
+				break;
 
 			}
 			// attackArea becomes solidArae
@@ -352,10 +351,13 @@ public class Player extends Entity {
 				gp.obj[i] = null;
 			}
 			// INVENTORY ITEMS
-			else {
+			else if (gp.obj[i].type != type_pickupOnly && gp.obj[i].type != type_door && gp.obj[i].type != type_chest) {
 				String text;
 				if (inventory.size() != maxInventorySize) {
 					inventory.add(gp.obj[i]);
+					if(gp.obj[i].type == type_key) {
+						hasKey++;
+					}
 					gp.playSE(1);
 					text = "Got a " + gp.obj[i].name + "!";
 				} else {
@@ -363,6 +365,19 @@ public class Player extends Entity {
 				}
 				gp.ui.addMessage(text);
 				gp.obj[i] = null;
+			} else if (gp.obj[i].type == type_door) {
+				if (hasKey < 1) {
+					gp.gameState = gp.dialogueState;
+					gp.ui.currentDialogue = ("The door seems to be locked!\nI need to find the key!");
+				} else {
+					gp.playSE(3);
+					gp.ui.addMessage("Unlocked door!");
+					hasKey--;
+					gp.obj[i] = null;
+				}
+			} else if (gp.obj[i].type == type_chest) {
+				gp.gameState = gp.winState;
+
 			}
 
 			// String objectName = gp.obj[i].name;
@@ -396,6 +411,7 @@ public class Player extends Entity {
 			// break;
 			// }
 		}
+
 	}
 
 	public void draw(Graphics2D g2) {
@@ -407,117 +423,117 @@ public class Player extends Entity {
 		int tempScreenY = screenY;
 
 		switch (direction) {
-			case "up":
-				if (attacking == false) {
-					if (spriteNumber == 1) {
-						image = up1;
-					}
-					if (spriteNumber == 2) {
-						image = up;
-					}
-					if (spriteNumber == 3) {
-						image = up2;
-					}
-					if (spriteNumber == 4) {
-						image = up;
-					}
+		case "up":
+			if (attacking == false) {
+				if (spriteNumber == 1) {
+					image = up1;
 				}
-				if (attacking == true) {
-					tempScreenY = screenY - gp.tileSize;
-					if (spriteNumber == 1) {
-						image = attackUp;
-					}
-					if (spriteNumber == 2) {
-						image = attackUp1;
-					}
-					if (spriteNumber == 3) {
-						image = attackUp2;
-					}
+				if (spriteNumber == 2) {
+					image = up;
 				}
+				if (spriteNumber == 3) {
+					image = up2;
+				}
+				if (spriteNumber == 4) {
+					image = up;
+				}
+			}
+			if (attacking == true) {
+				tempScreenY = screenY - gp.tileSize;
+				if (spriteNumber == 1) {
+					image = attackUp;
+				}
+				if (spriteNumber == 2) {
+					image = attackUp1;
+				}
+				if (spriteNumber == 3) {
+					image = attackUp2;
+				}
+			}
 
-				break;
-			case "down":
-				if (attacking == false) {
-					if (spriteNumber == 1) {
-						image = down1;
-					}
-					if (spriteNumber == 2) {
-						image = down;
-					}
-					if (spriteNumber == 3) {
-						image = down2;
-					}
-					if (spriteNumber == 4) {
-						image = down;
-					}
+			break;
+		case "down":
+			if (attacking == false) {
+				if (spriteNumber == 1) {
+					image = down1;
 				}
-				if (attacking == true) {
-					if (spriteNumber == 1) {
-						image = attackDown;
-					}
-					if (spriteNumber == 2) {
-						image = attackDown1;
-					}
-					if (spriteNumber == 3) {
-						image = attackDown2;
-					}
+				if (spriteNumber == 2) {
+					image = down;
 				}
-				break;
-			case "left":
-				if (attacking == false) {
-					if (spriteNumber == 1) {
-						image = left1;
-					}
-					if (spriteNumber == 2) {
-						image = left;
-					}
-					if (spriteNumber == 3) {
-						image = left2;
-					}
-					if (spriteNumber == 4) {
-						image = left;
-					}
+				if (spriteNumber == 3) {
+					image = down2;
 				}
-				if (attacking == true) {
-					tempScreenX = screenX - gp.tileSize;
-					if (spriteNumber == 1) {
-						image = attackLeft;
-					}
-					if (spriteNumber == 2) {
-						image = attackLeft1;
-					}
-					if (spriteNumber == 3) {
-						image = attackLeft2;
-					}
+				if (spriteNumber == 4) {
+					image = down;
 				}
-				break;
-			case "right":
-				if (attacking == false) {
-					if (spriteNumber == 1) {
-						image = right1;
-					}
-					if (spriteNumber == 2) {
-						image = right;
-					}
-					if (spriteNumber == 3) {
-						image = right2;
-					}
-					if (spriteNumber == 4) {
-						image = right;
-					}
+			}
+			if (attacking == true) {
+				if (spriteNumber == 1) {
+					image = attackDown;
 				}
-				if (attacking == true) {
-					if (spriteNumber == 1) {
-						image = attackRight;
-					}
-					if (spriteNumber == 2) {
-						image = attackRight1;
-					}
-					if (spriteNumber == 3) {
-						image = attackRight2;
-					}
+				if (spriteNumber == 2) {
+					image = attackDown1;
 				}
-				break;
+				if (spriteNumber == 3) {
+					image = attackDown2;
+				}
+			}
+			break;
+		case "left":
+			if (attacking == false) {
+				if (spriteNumber == 1) {
+					image = left1;
+				}
+				if (spriteNumber == 2) {
+					image = left;
+				}
+				if (spriteNumber == 3) {
+					image = left2;
+				}
+				if (spriteNumber == 4) {
+					image = left;
+				}
+			}
+			if (attacking == true) {
+				tempScreenX = screenX - gp.tileSize;
+				if (spriteNumber == 1) {
+					image = attackLeft;
+				}
+				if (spriteNumber == 2) {
+					image = attackLeft1;
+				}
+				if (spriteNumber == 3) {
+					image = attackLeft2;
+				}
+			}
+			break;
+		case "right":
+			if (attacking == false) {
+				if (spriteNumber == 1) {
+					image = right1;
+				}
+				if (spriteNumber == 2) {
+					image = right;
+				}
+				if (spriteNumber == 3) {
+					image = right2;
+				}
+				if (spriteNumber == 4) {
+					image = right;
+				}
+			}
+			if (attacking == true) {
+				if (spriteNumber == 1) {
+					image = attackRight;
+				}
+				if (spriteNumber == 2) {
+					image = attackRight1;
+				}
+				if (spriteNumber == 3) {
+					image = attackRight2;
+				}
+			}
+			break;
 		}
 		if (invincible == true) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));

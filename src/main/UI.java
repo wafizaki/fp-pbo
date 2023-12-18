@@ -19,7 +19,6 @@ public class UI {
 	Graphics2D g2;
 	Font font2d, font2d_40B, font2d_25;
 	public boolean messageOn = false;
-	public boolean isGameFinished = false;
 	public String currentDialogue = "";
 	public int commandNum = 0;
 	BufferedImage heart_full, heart_half, heart_blank;
@@ -89,50 +88,45 @@ public class UI {
 		if (gp.gameState == gp.optionsState) {
 			drawOptionsScreen();
 		}
+//		WIN STATE
+		if (gp.gameState == gp.winState) {
+			drawWinScreen();
+		} 
+	}
 
-		if (isGameFinished == true) {
-//			g2.setFont(font2d_25);
-//			g2.setColor(Color.WHITE);
-//
-//			String text;
-//			int x, y, textLength;
-//
-//			text = "You found the treasure!";
-//			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			x = gp.screenWidth / 2 - textLength / 2;
-//			y = gp.screenHeight / 2 - (gp.tileSize * 3);
-//			g2.drawString(text, x, y);
-//
-//			text = "Your Time is :" + dFormat.format(playTime) + "!";
-//			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			x = gp.screenWidth / 2 - textLength / 2;
-//			y = gp.screenHeight / 2 + (gp.tileSize * 4);
-//			g2.drawString(text, x, y);
-//
-//			g2.setFont(font2d_40B);
-//			g2.setColor(Color.yellow);
-//			text = "CONGRATULATIONS!";
-//			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-//			x = gp.screenWidth / 2 - textLength / 2;
-//			y = gp.screenHeight / 2 + (gp.tileSize * 2);
-//			g2.drawString(text, x, y);
-//
-//			gp.gameThread = null;
-		} else {
-//			g2.setFont(font2d_25);
-//			g2.setColor(Color.WHITE);
-//
-//			// message
-//			if (messageOn == true) {
-//				g2.setFont(g2.getFont().deriveFont(18F));
-//				g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
-//
-//
-//				if (messageCounter > 120) {
-//					messageCounter = 0;
-//					messageOn = false;
-//				}
-//			}
+	private void drawWinScreen() {
+		g2.setColor(new Color(0, 0, 0));
+		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+//		TITLE NAME
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 55F));
+		String text = "YOU WIN!";
+		int x = getXforCenteredText(text);
+		int y = gp.tileSize * 3;
+
+//		SHADOW
+		g2.setColor(Color.gray);
+		g2.drawString(text, x + 5, y - 15);
+//		MAIN COLOR
+		g2.setColor(Color.white);
+		g2.drawString(text, x, y - 20);
+
+//		MENU
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 36));
+
+		text = "NEW GAME";
+		x = getXforCenteredText(text);
+		y += gp.tileSize * 3.5;
+//		SHADOW
+		g2.setColor(Color.gray);
+		g2.drawString(text, x + 5, y + 5);
+//		MAIN COLOR
+		g2.setColor(Color.white);
+		g2.drawString(text, x, y);
+		if (commandNum == 0) {
+			g2.setColor(Color.gray);
+			g2.drawString(">", x - gp.tileSize + 3, y + 3);
+			g2.setColor(Color.white);
+			g2.drawString(">", x - gp.tileSize, y);
 		}
 	}
 
