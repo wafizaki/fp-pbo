@@ -357,6 +357,7 @@ public class Player extends Entity {
 	public void pickUpObject(int i) {
 
 		if (i != 999) {
+			String text;
 
 			// PICKUP ONLY ITEMS
 			if (gp.obj[i].type == type_pickupOnly) {
@@ -364,29 +365,16 @@ public class Player extends Entity {
 				gp.obj[i].use(this);
 				gp.obj[i] = null;
 			}
-			// INVENTORY ITEMS
-			else if (gp.obj[i].type != type_pickupOnly && gp.obj[i].type != type_door && gp.obj[i].type != type_chest) {
-				String text;
-				if (inventory.size() != maxInventorySize) {
 
-					if (gp.obj[i].type == type_key) {
-						hasKey++;
-						gp.playSE(1);
-						text = "Got a " + gp.obj[i].name + "!";
-						gp.ui.addMessage(text);
-					} else {
-						inventory.add(gp.obj[i]);
-						gp.playSE(1);
-						text = "Got a " + gp.obj[i].name + "!";
-						gp.ui.addMessage(text);
-					}
-				} else {
-					text = "Your inventory is full!";
-					gp.ui.addMessage(text);
-				}
-
+			else if (gp.obj[i].type == type_key) {
+				hasKey++;
+				gp.playSE(1);
+				text = "Got a " + gp.obj[i].name + "!";
+				gp.ui.addMessage(text);
 				gp.obj[i] = null;
-			} else if (gp.obj[i].type == type_door) {
+			}
+			// INVENTORY ITEMS
+			 else if (gp.obj[i].type == type_door) {
 				if (hasKey < 1) {
 					gp.gameState = gp.dialogueState;
 					gp.ui.currentDialogue = ("The door seems to be locked!\nI need to find the key!");
@@ -401,6 +389,21 @@ public class Player extends Entity {
 				gp.stopMusic();
 				gp.playMusic(10);
 				gp.gameState = gp.winState;
+			}
+			else  {
+				if (inventory.size() != maxInventorySize) {
+
+					inventory.add(gp.obj[i]);
+					gp.playSE(1);
+					text = "Got a " + gp.obj[i].name + "!";
+					gp.ui.addMessage(text);
+					gp.obj[i] = null;
+				} else {
+					text = "Your inventory is full!";
+					gp.ui.addMessage(text);
+				}
+
+				gp.obj[i] = null;
 			}
 
 		}
