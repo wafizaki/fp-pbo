@@ -182,10 +182,12 @@ public class KeyHandler implements KeyListener {
 		}
 		if (code == KeyEvent.VK_ENTER) {
 			if (gp.ui.commandNum == 0) {
-				gp.gameState = gp.playState;
+				gp.playSE(9);
 				gp.playMusic(0);
+				gp.gameState = gp.playState;
 			}
 			if (gp.ui.commandNum == 1) {
+				gp.playSE(9);
 				gp.gameState = gp.creditsState;
 			}
 			if (gp.ui.commandNum == 2) {
@@ -292,7 +294,7 @@ public class KeyHandler implements KeyListener {
 	private void creditsState(int code) {
 		if (code == KeyEvent.VK_ENTER) {
 			gp.gameState = gp.titleState;
-			gp.ui.commandNum = 0;
+			gp.playSE(9);
 		}
 	}
 

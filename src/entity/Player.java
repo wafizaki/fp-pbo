@@ -383,7 +383,6 @@ public class Player extends Entity {
 					gp.ui.addMessage("Unlocked door!");
 					hasKey--;
 					gp.obj[i] = null;
-					removeKey();
 				}
 			} else if (gp.obj[i].type == type_chest) {
 				gp.stopMusic();
@@ -410,13 +409,6 @@ public class Player extends Entity {
 
 	}
 
-	private void removeKey() {
-		int itemIndex = gp.ui.getItemIndexOnSlot();
-		Entity selectedItem = inventory.get(itemIndex);
-		if (selectedItem.type == type_key) {
-			inventory.remove(itemIndex);
-		}
-	}
 
 	public void draw(Graphics2D g2) {
 

@@ -175,40 +175,83 @@ public class UI {
 	}
 
 	private void drawCreditsScreen() {
-		// Fill the screen with a black background
+		int textX;
+		int textY;
+		int frameX = gp.tileSize * 5;
+		int frameY = gp.tileSize;
+		int frameWidth = gp.tileSize * 10;
+		int frameHeight = gp.tileSize * 10;
+		
 		g2.setColor(Color.black);
 		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
-		String developer1 = "Developers :";
-		String developer2 = "\n";
-		String developer3 = "Ardhika Krishna";
-		String developer4 = "Wafi Zaki";
 
-		g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30));
-		int x = getXforCenteredText(developer1);
-		int y = gp.tileSize * 4;
-
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30));
+//		SHADOW
+		g2.setColor(Color.gray);
+		String text = "DEVELOPERS:";
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.tileSize;
+		g2.drawString(text, textX+3, textY+3);
+//		MAIN
 		g2.setColor(Color.white);
+		textX = getXforCenteredText(text);
+		textY = frameY + gp.tileSize;
+		g2.drawString(text, textX, textY);
+		textY += gp.tileSize;
+		g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24));
+		g2.setColor(Color.white);
+		text = "Ardhika Krishna Wijaya";
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX, textY);
+		textY += gp.tileSize;
+		
+		text = "Muhammad Wafi Zaki Hanif";
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX, textY);
+		textY += gp.tileSize + 24;
+		
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30));
+//		SHADOW
+		g2.setColor(Color.gray);
+		text = "SPECIAL THANKS TO:";
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX+3, textY+3);
+		
+//		MAIN
+		g2.setColor(Color.white);
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX, textY);
+		textY += gp.tileSize + 24;
+		
+		g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24));
+		g2.setColor(Color.white);
+		text = "Game Endeavor";
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX, textY);
+		textY += gp.tileSize;
+		
+		text = "RyiSnow";
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX, textY);
+		textY += gp.tileSize*4;
+		
+//		SHADOW
+		g2.setColor(Color.gray);
+		text = "BACK";
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX+3, textY+3);
+		g2.drawString(">", textX - gp.tileSize + 3, textY+3);
+		
+//		MAIN
+		g2.setColor(Color.white);
+		textX = getXforCenteredText(text);
+		g2.drawString(text, textX, textY);
+		g2.drawString(">", textX - gp.tileSize, textY+3);
+		
+		
 
-		g2.drawString(developer1, x, y);
-		g2.drawString(developer2, x, y + gp.tileSize);
-		g2.drawString(developer3, x, y + gp.tileSize * 2);
-		g2.drawString(developer4, x, y + gp.tileSize * 3);
 
-		String text = "BACK";
-		x = getXforCenteredText(text);
-		y = gp.tileSize * 10;
-		g2.drawString(text, x, y);
-		if (commandNum == 0) {
-			g2.setColor(Color.gray);
-			g2.drawString(">", x - gp.tileSize + 3, y + 3);
-			g2.setColor(Color.white);
-			g2.drawString(">", x - gp.tileSize, y);
-			if (gp.keyH.enterPressed == true) {
-				gp.gameState = gp.titleState;
-				commandNum = 0;
-			}
-		}
 	}
 
 	private void drawOptionsScreen() {
@@ -295,7 +338,7 @@ public class UI {
 		int textX = frameX + gp.tileSize;
 		int textY = frameY + gp.tileSize * 3;
 
-		currentDialogue = "Quit the game\nand return to the\ntitle screen?";
+		currentDialogue = "Quit the gam and\nreturn to the title\nscreen?";
 
 		for (String line : currentDialogue.split("\n")) {
 			g2.drawString(line, textX, textY);
